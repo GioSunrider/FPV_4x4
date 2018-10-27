@@ -15,6 +15,7 @@ unsigned long THROTTLE_DURATION;
 
 const byte START_STOP_IN_PIN = 3; //SWITCH
 const byte START_STOP_OUT_PIN = 4; //STBY DRIVER
+unsigned long STOP_DURATION;
 
 //Driver Pin
 const int pinAIN2 = 7;
@@ -55,9 +56,16 @@ void setup()
 
 void loop()
 {
+  //STAR-STOP
+  STOP_DURATION = pulseIn(START_STOP_IN_PIN, HIGH);
+  STOP_DURATION = map(STOP_DURATION, 1000, 1500, 0, 1);
+  digitalWrite( START_STOP_OUT_PIN, HIGH);
+  delayMicroseconds(STOP_DURATION);
+  digitalWrite( START_STOP_OUT_PIN, LOW);
+  
   //LEFT
   YAW_DURATION = pulseIn(YAW_IN_PIN, HIGH);
-  YAW_DURATION = map(YAW_DURATION, 1000, 2000, 980, 2020);
+  YAW_DURATION = map(YAW_DURATION, 1450, 1000, 980, 2020);
   digitalWrite(YAW_OUT_PIN, HIGH);
   Direction.write(30);
   delayMicroseconds(YAW_DURATION);
@@ -65,7 +73,7 @@ void loop()
 
   //RIGHT
   YAW_DURATION = pulseIn(YAW_IN_PIN, HIGH);
-  YAW_DURATION = map(YAW_DURATION, 1000, 2000, 980, 2020);
+  YAW_DURATION = map(YAW_DURATION, 1550, 2000, 980, 2020);
   digitalWrite(YAW_OUT_PIN, HIGH);
   Direction.write(-30);
   delayMicroseconds(YAW_DURATION);
@@ -73,7 +81,7 @@ void loop()
 
   //FORWARD
   THROTTLE_DURATION = pulseIn(THROTTLE_IN_PIN, HIGH);
-  THROTTLE_DURATION = map(THROTTLE_DURATION, 1000, 2000, 980, 2020);
+  THROTTLE_DURATION = map(THROTTLE_DURATION, 1550, 2000, 980, 2020);
   digitalWrite(THROTTLE_OUT_PIN, HIGH);
   move(forward, speed);
   delayMicroseconds(THROTTLE_DURATION);
@@ -81,7 +89,7 @@ void loop()
 
   //BACKWARD
   THROTTLE_DURATION = pulseIn(THROTTLE_IN_PIN, HIGH);
-  THROTTLE_DURATION = map(THROTTLE_DURATION, 1000, 2000, 980, 2020);
+  THROTTLE_DURATION = map(THROTTLE_DURATION, 1450, 1000, 980, 2020);
   digitalWrite(THROTTLE_OUT_PIN, HIGH);
   move(backward, speed);
   delayMicroseconds(THROTTLE_DURATION);
