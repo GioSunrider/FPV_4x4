@@ -1,40 +1,91 @@
 #include <Servo.h>
 
-#define THROTTLE_SIGNAL_IN_PIN 2 
-#define RIGHT_LEFT_STICK_SIGNAL_IN_PIN 3 
-
-#define NEUTRAL_STICK 1500 // this is the duration in microseconds of neutral throttle on an electric RC Car
-
-Servo Movement;
-
+//Servo which controls the right-left direction
+Servo Direction;
 const int TRIM = 0;
-const int PIN_Movement = 5;
-const int speed = 200;
+
+//Set the digital PIN of the Arduino
+const byte  YAW_IN_PIN = 5;
+const byte YAW_OUT_PIN = 10; //Pin DIRECTION
+unsigned long YAW_DURATION;
+
+const byte THROTTLE_IN_PIN = 6;
+const byte THROTTLE_OUT_PIN = 9; //THROTTLE
+unsigned long THROTTLE_DURATION;
+
+const byte START_STOP_IN_PIN = 3; //SWITCH
+const byte START_STOP_OUT_PIN = 4; //STBY DRIVER
+
+//Driver Pin
+const int pinAIN2 = 7;
+const int pinAIN1 = 8;
+
+//Speed of the DC motor which is control by the throttle
+const int speed = 250;
 
 enum moveDirection {
    forward,
    backward
 };
 
-//Driver
-const int pinPWMA = 6;
-const int pinAIN2 = 7;
-const int pinAIN1 = 8;
-
-const int pinMotor[3] = { pinPWMA, pinAIN2, pinAIN1 };
-
-
+const int pinMotor[3] = { THROTTLE_OUT_PIN, pinAIN2, pinAIN1 };
 
 void setup()
 {
+  //Set the Pin of the FS Receiver
+  //Direction
+  pinMode(YAW_IN_PIN, INPUT);
+  pinMode(YAW_OUT_PIN, OUTPUT);
+  //Throtle
+  pinMode(THROTTLE_IN_PIN, INPUT);
+  pinMode(THROTTLE_OUT_PIN, OUTPUT);
+  pinMode(pinAIN2, OUTPUT);
+  pinMode(pinAIN1, OUTPUT);
+  //Star-Stop
+  pinMode(START_STOP_IN_PIN, INPUT);
+  pinMode(START_STOP_OUT_PIN, OUTPUT);
+  
+  // Attach the servo to digital pin PWM
+  Direction.attach(YAW_OUT_PIN);  
 
-  Movement.attach(PIN_Movement);  // Attach the servo to digital pin PWM
+
+  //Set the Baudrate
   Serial.begin(9600); 
 }
 
 void loop()
 {
+  //LEFT
+  YAW_DURATION = pulseIn(YAW_IN_PIN, HIGH);
+  YAW_DURATION = map(YAW_DURATION, 1000, 2000, 980, 2020);
+  digitalWrite(YAW_OUT_PIN, HIGH);
+  Direction.write(30);
+  delayMicroseconds(YAW_DURATION);
+  digitalWrite(YAW_OUT_PIN, LOW); 
 
+  //RIGHT
+  YAW_DURATION = pulseIn(YAW_IN_PIN, HIGH);
+  YAW_DURATION = map(YAW_DURATION, 1000, 2000, 980, 2020);
+  digitalWrite(YAW_OUT_PIN, HIGH);
+  Direction.write(-30);
+  delayMicroseconds(YAW_DURATION);
+  digitalWrite(YAW_OUT_PIN, LOW);
+
+  //FORWARD
+  THROTTLE_DURATION = pulseIn(THROTTLE_IN_PIN, HIGH);
+  THROTTLE_DURATION = map(THROTTLE_DURATION, 1000, 2000, 980, 2020);
+  digitalWrite(THROTTLE_OUT_PIN, HIGH);
+  move(forward, speed);
+  delayMicroseconds(THROTTLE_DURATION);
+  digitalWrite(THROTTLE_OUT_PIN, LOW); 
+
+  //BACKWARD
+  THROTTLE_DURATION = pulseIn(THROTTLE_IN_PIN, HIGH);
+  THROTTLE_DURATION = map(THROTTLE_DURATION, 1000, 2000, 980, 2020);
+  digitalWrite(THROTTLE_OUT_PIN, HIGH);
+  move(backward, speed);
+  delayMicroseconds(THROTTLE_DURATION);
+  digitalWrite(THROTTLE_OUT_PIN, LOW); 
 }
 
 
@@ -43,13 +94,11 @@ void move(int direction, int speed)
 {
    if (direction == forward)
    {
-      moveMotorForward(pinMotorA, speed);
-      moveMotorForward(pinMotorB, speed);
+      moveMotorForward(pinMotor, speed);
    }
    else
    {
-      moveMotorBackward(pinMotorA, speed);
-      moveMotorBackward(pinMotorB, speed);
+      moveMotorBackward(pinMotor, speed);
    }
 }
 
