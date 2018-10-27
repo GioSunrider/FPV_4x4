@@ -14,6 +14,7 @@ Proyecto de Modificacion de un 4x4 RC para un control mediante la FS-i6 y conduc
 * [Driver TB6612FNG Motor DC - Aliexpress](https://es.aliexpress.com/item/1-unids-Motor-Dual-conductor-1A-TB6612FNG-para-microcontrolador-Arduino-mejor-que-L298N/32841510198.html?spm=a2g0s.9042311.0.0.f4c263c0MzaaOj)
 * [Bateria Li-Po - GAONENG GNB 7.4V 600mAh 2S 50C - Banggood](https://www.banggood.com/GAONENG-GNB-7_4V-600mAh-2S-50C-Lipo-Battery-XT30-Plug-for-FPV-Racing-p-1171094.html?rmmds=search&cur_warehouse=CN)
 * [UBEC - Hobbywing 3A UBEC 5V 6V Switch Mode - Banggood](https://www.banggood.com/Hobbywing-3A-UBEC-5V-6V-Switch-Mode-BEC-For-RC-Models-p-915037.html?rmmds=search&cur_warehouse=CN)
+* [Cargador de Baterias - ISDT Q6 Pro BattGo 300W 14A - Banggood](https://www.banggood.com/ISDT-Q6-Pro-BattGo-300W-14A-Pocket-Lipo-Battery-Balance-Charger-p-1288640.html?rmmds=search&cur_warehouse=CN)
 
 ### Coche
 * Valido cualquier coche de juguete, en mi caso lo realizare con uno de la marca New Bright, modelo Canyon A/T que usare el chasis y el motor. En el se ha sustituido el motor DC por un servo para controlar la direccion.
