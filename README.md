@@ -30,7 +30,7 @@ El UBEC/BEC debe ser capaz de convertir a un **rango de 2,7-5.5 VDC** para el su
 * [Emmisora FlySky i6 FS-i6 - Banggood](https://www.banggood.com/FlySky-i6-FS-i6-2_4G-6CH-AFHDS-RC-Transmitter-Without-Receiver-p-1148659.html?rmmds=search&ID=42482529914&cur_warehouse=CN)
 * [Receptora FlySky FS-X6B - Bangggod](https://www.banggood.com/Flysky-X6B-2_4G-6CH-i-BUS-PPM-PWM-Receiver-for-AFHDS-i6s-i6-i6x-Transmitter-p-1101513.html?rmmds=search&cur_warehouse=CN)
 
-####Paginas Web de Interes
-https://img.banggood.com/file/products/20160924022953FS-X6B%20Receiver%20User%20Manual.pdf
-https://www.luisllamas.es/conectar-emisora-radio-control-con-arduino/
-http://www.benripley.com/diy/arduino/three-ways-to-read-a-pwm-signal-with-arduino/
+#### Paginas Web de Interes
+* https://img.banggood.com/file/products/20160924022953FS-X6B%20Receiver%20User%20Manual.pdf
+* https://www.luisllamas.es/conectar-emisora-radio-control-con-arduino/
+* http://www.benripley.com/diy/arduino/three-ways-to-read-a-pwm-signal-with-arduino/
