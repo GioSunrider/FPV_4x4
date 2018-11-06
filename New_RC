@@ -1,57 +1,66 @@
-//Outputs for the DC Motor Driver
-const int AIN1 = 12;
-const int AIN2 = 13;
+#include <Servo.h>
 
-//the following are all ~PWM capable ports
-const int enable1 = 11;
-const int RC_Channel = 3;
+//Driver
+const int AIN1 = 8;
+const int AIN2 = 7;
+const int PWMA = 9;
+
+//Servo
+Servo Direction;
+const int SERVO_OUT = 10;
+
+//FS PIN Ports PWM
+const int RC_CHANNEL2 = 5;
+const int RC_CHANNEL1 = 6;
+const int SWA = 3;
 
 void setup() {
-  pinMode(RC_Channel, INPUT);
-  pinMode(in1, OUTPUT);
-  pinMode(in2, OUTPUT);
-  pinMode(enable1, OUTPUT);
+  pinMode(RC_CHANNEL2, INPUT);
+  pinMode(RC_CHANNEL1, INPUT);
+  pinMode(SWA, INPUT);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(PWMA, OUTPUT);
+  Direction.attach(SERVO_OUT);
   Serial.begin(9600);
 }
 
 void loop() {
   
   int pwm = 0;
-  int swd = pulseIn(switchD, HIGH, 25000);
-  int rc4 = pulseIn(rc_channel4, HIGH, 25000);
+  int swd = pulseIn(SWA, HIGH);
+  int rc2 = pulseIn(RC_CHANNEL2, HIGH);
   
   Serial.print("switch: ");
   Serial.print(swd);
-  Serial.print(" raw channel4: ");
-  Serial.print(rc4);
+  Serial.print(" RC_CHANNEL 2: ");
+  Serial.print(rc2);
   
-  if(rc4==0){
+  if(rc2==0){
       Serial.println(" no signal");
-      digitalWrite(in1, LOW);
-      digitalWrite(in2, LOW);
-      analogWrite(enable1, 0);
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, 0);
   }
-  else if(rc4 > 1530){ //right stick
-      pwm = map(rc4, 1530, 2000, 0, 255); //map our speed to 0-255 range
-      digitalWrite(in1, LOW);
-      digitalWrite(in2, HIGH);
-      analogWrite(enable1, pwm);
-      Serial.print(" right stick speed: ");
+  else if(rc2 > 1500){ //right stick
+      pwm = map(rc2, 1500, 1988, 0, 255); //map our speed to 0-255 range
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, HIGH);
+      analogWrite(PWMA, pwm);
+      Serial.print(" up stick speed: ");
       Serial.println(pwm);
   }
-  else if(rc4 < 1460){
-      pwm = map(rc4, 1460, 1000, 0, 255); //map our speed to 0-255 range
-      digitalWrite(in1, HIGH);
-      digitalWrite(in2, LOW);
-      analogWrite(enable1, pwm);
-      Serial.print(" left stick speed: ");
+  else if(rc2 < 1480){
+      pwm = map(rc2, 1480, 1000, 0, 255); //map our speed to 0-255 range
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, pwm);
+      Serial.print(" down stick speed: ");
       Serial.println(pwm);
   }else{
       Serial.println(" stick centered");
-      digitalWrite(in1, LOW);
-      digitalWrite(in2, LOW);
-      analogWrite(enable1, 0);
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, 0);
   }
-  
-  delay(10);
 }
