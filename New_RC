@@ -30,37 +30,81 @@ void loop() {
   int pwm = 0;
   int swd = pulseIn(SWA, HIGH);
   int rc2 = pulseIn(RC_CHANNEL2, HIGH);
+  int rc1 = pulseIn(RC_CHANNEL1, HIGH);
   
   Serial.print("switch: ");
   Serial.print(swd);
   Serial.print(" RC_CHANNEL 2: ");
   Serial.print(rc2);
-  
-  if(rc2==0){
+  Serial.print(" RC_CHANNEL 1: ");
+  Serial.print(rc1);
+
+
+  if(swd>50)
+  {
+    if(rc2==0)//ahead stick
+    {
       Serial.println(" no signal");
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, LOW);
       analogWrite(PWMA, 0);
-  }
-  else if(rc2 > 1500){ //right stick
+    }
+    else if(rc2 > 1500) 
+    {
       pwm = map(rc2, 1500, 1988, 0, 255); //map our speed to 0-255 range
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, HIGH);
       analogWrite(PWMA, pwm);
-      Serial.print(" up stick speed: ");
+      Serial.print(" ahead stick speed: ");
       Serial.println(pwm);
-  }
-  else if(rc2 < 1480){
+    }
+    else if(rc2 < 1480)
+    {
       pwm = map(rc2, 1480, 1000, 0, 255); //map our speed to 0-255 range
       digitalWrite(AIN1, HIGH);
       digitalWrite(AIN2, LOW);
       analogWrite(PWMA, pwm);
-      Serial.print(" down stick speed: ");
+      Serial.print(" back stick speed: ");
       Serial.println(pwm);
-  }else{
+    }
+    else
+    {
       Serial.println(" stick centered");
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, LOW);
       analogWrite(PWMA, 0);
+    } 
+
+    
+    if(rc1==0)//Direction stick
+    {
+      Serial.println(" no signal");
+      Direction.write(90);
+      
+    }
+    else if(rc1 > 1500) //right stick
+    {
+      pwm = map(rc1, 1500, 1988, 0, 255); //map our speed to 0-255 range
+      Direction.write(170);
+      Serial.print(" right stick speed: ");
+      Serial.println(pwm);
+    }
+    else if(rc1 < 1480)
+    {
+      pwm = map(rc1, 1480, 1000, 0, 255); //map our speed to 0-255 range
+      Direction.write(10);
+      Serial.print(" left stick speed: ");
+      Serial.println(pwm);
+    }
+    else
+    {
+      Serial.println(" stick centered");
+      
+    }     
   }
+  else
+  {
+      Serial.println("Interruptor desactivado.");
+  }
+  
 }
