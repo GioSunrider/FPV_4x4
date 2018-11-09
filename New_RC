@@ -40,7 +40,7 @@ void loop() {
     Serial.print(rc2);
     Serial.print(" RC_CHANNEL 1: ");
     Serial.print(rc1);
-    if(rc2==0)//ahead stick
+    if(rc2==0||rc1==0)//ahead stick
     {
       Serial.println(" no signal");
       digitalWrite(AIN1, LOW);
@@ -65,22 +65,7 @@ void loop() {
       Serial.print(" back stick speed: ");
       Serial.println(pwm);
     }
-    else
-    {
-      Serial.println(" stick centered");
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, LOW);
-      analogWrite(PWMA, 0);
-    } 
-
-    
-    if(rc1==0)//Direction stick
-    {
-      Serial.println(" no signal");
-      Direction.write(90);
-      
-    }
-    else if(rc1 > 1500) //right stick
+     else if(rc1 > 1500) //right stick
     {
       pwm = map(rc1, 1500, 1988, 0, 255); //map our speed to 0-255 range
       Direction.write(170);
@@ -97,8 +82,10 @@ void loop() {
     else
     {
       Serial.println(" stick centered");
-      
-    }     
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, 0);
+    }      
   }
   else
   {
