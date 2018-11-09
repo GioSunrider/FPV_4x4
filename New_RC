@@ -49,7 +49,7 @@ void loop() {
     }
     else if(rc2 > 1500) 
     {
-      pwm = map(rc2, 1500, 1988, 0, 255);//speed 0-255 range 
+      pwm = map(rc2, 1500, 1975, 0, 255);//speed 0-255 range 
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, HIGH);
       analogWrite(PWMA, pwm);
@@ -58,7 +58,7 @@ void loop() {
     }
     else if(rc2 < 1450)
     {
-      pwm = map(rc2, 1480, 1000, 0, 255); //speed 0-255 range
+      pwm = map(rc2, 1480, 989, 0, 255); //speed 0-255 range
       digitalWrite(AIN1, HIGH);
       digitalWrite(AIN2, LOW);
       analogWrite(PWMA, pwm);
@@ -67,14 +67,14 @@ void loop() {
     }
      else if(rc1 > 1500) //right stick
     {
-      pwm = map(rc1, 1500, 1988, 0, 255); //map our speed to 0-255 range
+      pwm = map(rc1, 1500, 1975, 0, 255); //map our speed to 0-255 range
       Direction.write(90+pwm);
       Serial.print(" right stick speed: ");
       Serial.println(pwm);
     }
     else if(rc1 < 1450)
     {
-      pwm = map(rc1, 1480, 1000, 0, 255); //map our speed to 0-255 range
+      pwm = map(rc1, 1480, 989, 0, 255); //map our speed to 0-255 range
       Direction.write(90-pwm);
       Serial.print(" left stick speed: ");
       Serial.println(pwm);
