@@ -10,9 +10,9 @@ Servo Direction;
 const int SERVO_OUT = 10;
 
 //FS PIN Ports PWM
-const int RC_CHANNEL2 = 5;
-const int RC_CHANNEL1 = 6;
-const int SWA = 3;
+const int RC_CHANNEL2 = 5;//Ahead and back pin
+const int RC_CHANNEL1 = 6;//Left and Right pin
+const int SWA = 3;//Disable pin
 
 void setup() {
   pinMode(RC_CHANNEL2, INPUT);
@@ -32,16 +32,14 @@ void loop() {
   int rc2 = pulseIn(RC_CHANNEL2, HIGH);
   int rc1 = pulseIn(RC_CHANNEL1, HIGH);
   
-  Serial.print("switch: ");
-  Serial.print(swd);
-  Serial.print(" RC_CHANNEL 2: ");
-  Serial.print(rc2);
-  Serial.print(" RC_CHANNEL 1: ");
-  Serial.print(rc1);
-
-
-  if(swd>50)
+  if(swd>1000)//Interruptor activado
   {
+    Serial.print("switch: ");
+    Serial.print(swd);
+    Serial.print(" RC_CHANNEL 2: ");
+    Serial.print(rc2);
+    Serial.print(" RC_CHANNEL 1: ");
+    Serial.print(rc1);
     if(rc2==0)//ahead stick
     {
       Serial.println(" no signal");
@@ -51,7 +49,7 @@ void loop() {
     }
     else if(rc2 > 1500) 
     {
-      pwm = map(rc2, 1500, 1988, 0, 255); //map our speed to 0-255 range
+      pwm = map(rc2, 1500, 1988, 0, 255);//speed 0-255 range 
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, HIGH);
       analogWrite(PWMA, pwm);
@@ -60,7 +58,7 @@ void loop() {
     }
     else if(rc2 < 1480)
     {
-      pwm = map(rc2, 1480, 1000, 0, 255); //map our speed to 0-255 range
+      pwm = map(rc2, 1480, 1000, 0, 255); //speed 0-255 range
       digitalWrite(AIN1, HIGH);
       digitalWrite(AIN2, LOW);
       analogWrite(PWMA, pwm);
