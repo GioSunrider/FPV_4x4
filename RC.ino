@@ -115,7 +115,6 @@ void moveMotorForward(const int pinMotor[3], int speed)
 {
    digitalWrite(pinMotor[1], HIGH);
    digitalWrite(pinMotor[2], LOW);
- 
    analogWrite(pinMotor[0], speed);
 }
  
@@ -123,6 +122,5 @@ void moveMotorBackward(const int pinMotor[3], int speed)
 {
    digitalWrite(pinMotor[1], LOW);
    digitalWrite(pinMotor[2], HIGH);
- 
    analogWrite(pinMotor[0], speed);
 }
