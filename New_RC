@@ -1,33 +1,33 @@
 #include <Servo.h>
 
+//Driver
+const int AIN1 = 8;
+const int AIN2 = 7;
+const int PWMA = 9;
 
 //Servo
-Servo DirectionL;
-Servo DirectionR;
-const int SERVO_OUTL = 3;
-const int SERVO_OUTR = 5;
-
-const int L_SERVO = 90;
-const int R_SERVO = 89;
+Servo Direction;
+const int SERVO_OUT = 10;
 
 //FS PIN Ports PWM
-const int RC_CHANNEL2 = 10;//Ahead and back pin
-const int RC_CHANNEL1 = 9;//Left and Right pin
-const int SWA = 11;//Disable pin
+const int RC_CHANNEL2 = 5;//Ahead and back pin
+const int RC_CHANNEL1 = 6;//Left and Right pin
+const int SWA = 3;//Disable pin
 
 void setup() {
   pinMode(RC_CHANNEL2, INPUT);
   pinMode(RC_CHANNEL1, INPUT);
   pinMode(SWA, INPUT);
-  DirectionL.attach(SERVO_OUTL);
-  DirectionR.attach(SERVO_OUTR);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(PWMA, OUTPUT);
+  Direction.attach(SERVO_OUT);
   Serial.begin(9600);
 }
 
 void loop() {
   
-  int pwmR = 0;
-  int pwmL = 0;
+  int pwm = 0;
   int swd = pulseIn(SWA, HIGH);
   int rc2 = pulseIn(RC_CHANNEL2, HIGH);
   int rc1 = pulseIn(RC_CHANNEL1, HIGH);
@@ -43,57 +43,53 @@ void loop() {
     if(rc2==0||rc1==0)//ahead stick
     {
       Serial.println(" no signal");
-      DirectionR.write(R_SERVO);
-      DirectionL.write(L_SERVO);
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, 0);
     }
     else if(rc2 > 1500) 
     {
-      pwmR = map(rc2, 1500, 1988, R_SERVO, R_SERVO);
-      pwmL = map(rc2, 1500, 1988, L_SERVO, L_SERVO);
-      DirectionR.write(90-pwmR);
-      DirectionL.write(90+pwmL);
+      pwm = map(rc2, 1500, 1975, 0, 255);//speed 0-255 range 
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, HIGH);
+      analogWrite(PWMA, pwm);
       Serial.print(" ahead stick speed: ");
-      Serial.println(pwmL);
+      Serial.println(pwm);
     }
     else if(rc2 < 1450)
     {
-      pwmR = map(rc2, 1480, 1000, R_SERVO, R_SERVO);
-      pwmL = map(rc2, 1480, 1000, L_SERVO, L_SERVO);
-      DirectionR.write(90+pwmR);
-      DirectionL.write(90-pwmL);
+      pwm = map(rc2, 1480, 989, 0, 255); //speed 0-255 range
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, pwm);
       Serial.print(" back stick speed: ");
-      Serial.println(pwmR);
+      Serial.println(pwm);
     }
-    else if(rc1 > 1500) //right stick
+     else if(rc1 > 1500) //right stick
     {
-      pwmR = map(rc1, 1500, 1988, R_SERVO, R_SERVO);
-      pwmL = map(rc1, 1500, 1988, L_SERVO, L_SERVO);
-      DirectionR.write(90+pwmR);
-      DirectionL.write(90+pwmL);
+      pwm = map(rc1, 1500, 1975, 0, 255); //map our speed to 0-255 range
+      Direction.write(90+pwm);
       Serial.print(" right stick speed: ");
-      Serial.println(pwmR);
+      Serial.println(pwm);
     }
     else if(rc1 < 1450)
     {
-      pwmR = map(rc1, 1480, 1000, R_SERVO, R_SERVO);
-      pwmL = map(rc1, 1480, 1000, L_SERVO, L_SERVO);
-      DirectionR.write(90-pwmR);
-      DirectionL.write(90-pwmL);
+      pwm = map(rc1, 1480, 989, 0, 255); //map our speed to 0-255 range
+      Direction.write(90-pwm);
       Serial.print(" left stick speed: ");
-      Serial.println(pwmL);
+      Serial.println(pwm);
     }
     else
     {
       Serial.println(" stick centered");
-      DirectionR.write(R_SERVO);
-      DirectionL.write(L_SERVO);
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      analogWrite(PWMA, 0);
     }      
   }
   else
   {
       Serial.println("Interruptor desactivado.");
-      DirectionR.write(R_SERVO);
-      DirectionL.write(L_SERVO);
   }
   
 }
